@@ -3,8 +3,11 @@ import { AUTH_ACTION_TYPES } from "store/actions/actionTypes/authActionTypes";
 
 export const signUp = (signup) => {
     return (dispatch, getState) => {
-        authServices.auth().signUp(signup).then(() => {
-            dispatch({type: AUTH_ACTION_TYPES.SIGNUP_SUCCESS, payload: signup});
+        authServices.auth().signUp(signup).then((response) => {
+            
+            localStorage.setItem('token', response.data.token);
+
+            dispatch({type: AUTH_ACTION_TYPES.SIGNUP_SUCCESS, payload: response.data});
         }).catch((err) => {
             dispatch({type: AUTH_ACTION_TYPES.SIGNUP_ERROR, err});
         })

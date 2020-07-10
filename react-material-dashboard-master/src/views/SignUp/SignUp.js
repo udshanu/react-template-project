@@ -14,6 +14,9 @@ import {
   Typography
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { connect } from 'react-redux';
+import { signUp } from '../../store/actions/authActions';
+import { Redirect } from 'react-router-dom';
 
 const schema = {
   firstName: {
@@ -141,7 +144,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUp = props => {
-  const { history } = props;
+  const { history, auth } = props;
 
   const classes = useStyles();
 
@@ -187,11 +190,18 @@ const SignUp = props => {
 
   const handleSignUp = event => {
     event.preventDefault();
-    history.push('/');
+    //history.push('/');
+
+    //Roshan
+    console.log(formState.values);
+    props.signup(formState.values)
   };
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
+
+
+    if (auth) return <Redirect to='/' />
 
   return (
     <div className={classes.root}>
@@ -382,4 +392,16 @@ SignUp.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignUp);
+const mapStateToProps = (state) => {
+  return {
+      auth: localStorage.getItem('token')
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      signup : (signup) => dispatch(signUp(signup))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignUp));

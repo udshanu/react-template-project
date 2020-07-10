@@ -1,6 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import {
   Budget,
@@ -19,8 +21,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const classes = useStyles();
+
+  //Roshan
+  console.log(props);
+  const { auth } = props;
+  console.log('auth from local storage', auth)
+
+  if (!auth) return <Redirect to='/sign-in' />
 
   return (
     <div className={classes.root}>
@@ -105,4 +114,16 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+const mapStateToProps = (state) => {
+  return {
+      auth: localStorage.getItem('token')
+  }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//       getAllProjects : () => dispatch(getAllProjects())
+//   }
+// }
+
+export default connect(mapStateToProps)(Dashboard);
