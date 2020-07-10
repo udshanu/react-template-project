@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography } from '@material-ui/core';
-import { connect } from 'react-redux';
+import HiddenValues from '../../../../../../common/getTokenHiddnVales';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Profile = props => {
-  const { className, fullName, ...rest } = props;
+  const { className, ...rest } = props;
 
   const classes = useStyles();
 
@@ -32,6 +32,18 @@ const Profile = props => {
     avatar: '/images/avatars/avatar_11.png',
     bio: 'Brain Director'
   };
+
+  const newUser = {
+    fullName: ''
+  };
+
+  const [profile, setProfile] = useState(newUser)
+
+  useEffect(() => {
+    var profileValues = HiddenValues.getHiddenValues()
+    var FullName = profileValues.FirstName + ' ' + profileValues.LastName;
+    setProfile({fullName:FullName});
+  })
 
   return (
     <div
@@ -50,7 +62,7 @@ const Profile = props => {
         variant="h4"
       >
         {/* {user.name} */}
-        {fullName}
+        {profile.fullName}
       </Typography>
       <Typography variant="body2">{user.bio}</Typography>
     </div>
@@ -61,11 +73,4 @@ Profile.propTypes = {
   className: PropTypes.string
 };
 
-const mapStateToProps = (state) => {
-  console.log('Profile FirstName: ', state.auth)
-  return {
-      fullName: state.auth.FirstName.toString() + ' ' + state.auth.LastName.toString()
-  }
-}
-
-export default connect(mapStateToProps)(Profile);
+export default Profile;

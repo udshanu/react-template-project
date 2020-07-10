@@ -82,7 +82,7 @@ Topbar.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      //signOut : () => dispatch(signOut())
+      signOut : () => dispatch(signOut())
   }
 }
 
