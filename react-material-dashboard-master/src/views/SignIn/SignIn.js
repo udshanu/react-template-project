@@ -14,6 +14,9 @@ import {
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+import { connect } from 'react-redux';
+import { signIn } from '../../store/actions/authActions';
+import { Redirect } from 'react-router-dom';
 
 const schema = {
   email: {
@@ -126,7 +129,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
-  const { history } = props;
+  const { history, auth } = props;
 
   const classes = useStyles();
 
@@ -172,11 +175,20 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    //history.push('/');
+
+    //code from roshan
+    console.log('Login formState ',formState);
+    console.log('Login formState.values ',formState.values);
+    console.log('Login Props ',props);
+    props.signin(formState.values)
+
   };
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
+
+    if (auth) return <Redirect to='/' />
 
   return (
     <div className={classes.root}>
@@ -344,4 +356,16 @@ SignIn.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignIn);
+const mapStateToProps = (state) => {
+  return {
+      auth: localStorage.getItem('token')
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      signin : (creds) => dispatch(signIn(creds))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignIn));
