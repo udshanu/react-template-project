@@ -29,13 +29,9 @@ const authReducer = (state = initState, action) => {
       console.log('SignUp error ', action.err);
       return state;
     case AUTH_ACTION_TYPES.SIGNIN_SUCCESS:
-      console.log('login success ', action.payload);
       var payload = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
-      console.log('Payload from login: ', payload);
       var userRole = payload.role;
-      console.log('userRole from login: ', userRole);
       var userName = payload.UserName
-      console.log('userName from login: ', userName);
       return {
         ...state,
         authError: null,

@@ -5,6 +5,8 @@ import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar, Footer } from './components';
+import HiddenValues from '../../common/getTokenHiddnVales'
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = props => {
-  const { children } = props;
+  const { children, FullName } = props;
 
   const classes = useStyles();
   const theme = useTheme();
@@ -55,6 +57,7 @@ const Main = props => {
         onClose={handleSidebarClose}
         open={shouldOpenSidebar}
         variant={isDesktop ? 'persistent' : 'temporary'}
+        fullName={FullName}
       />
       <main className={classes.content}>
         {children}
@@ -68,4 +71,12 @@ Main.propTypes = {
   children: PropTypes.node
 };
 
-export default Main;
+const mapStateToProps = (state) => {
+    var profileValues = HiddenValues.getHiddenValues()
+    var FullName = profileValues.FirstName + ' ' + profileValues.LastName;
+  return {
+    FullName: FullName
+  }
+}
+
+export default connect(mapStateToProps)(Main);

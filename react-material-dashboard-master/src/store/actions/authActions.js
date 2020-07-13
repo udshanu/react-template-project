@@ -25,6 +25,7 @@ export const signIn = (credentials) => {
             dispatch({type: AUTH_ACTION_TYPES.SIGNIN_SUCCESS, payload: response.data});
             
         }).catch((err) => {
+            console.log('Login Error: ', err);
             dispatch({type: AUTH_ACTION_TYPES.SIGNIN_ERROR, err});
         })
         

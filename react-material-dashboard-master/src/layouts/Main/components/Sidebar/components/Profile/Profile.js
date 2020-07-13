@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Profile = props => {
-  const { className, ...rest } = props;
+  const { className, fullName, ...rest } = props;
 
   const classes = useStyles();
 
@@ -33,17 +33,7 @@ const Profile = props => {
     bio: 'Brain Director'
   };
 
-  const newUser = {
-    fullName: ''
-  };
-
-  const [profile, setProfile] = useState(newUser)
-
-  useEffect(() => {
-    var profileValues = HiddenValues.getHiddenValues()
-    var FullName = profileValues.FirstName + ' ' + profileValues.LastName;
-    setProfile({fullName:FullName});
-  })
+  console.log('props in Profile ', props);
 
   return (
     <div
@@ -62,7 +52,7 @@ const Profile = props => {
         variant="h4"
       >
         {/* {user.name} */}
-        {profile.fullName}
+        {fullName}
       </Typography>
       <Typography variant="body2">{user.bio}</Typography>
     </div>

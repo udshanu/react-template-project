@@ -57,7 +57,7 @@ const Topbar = props => {
           <IconButton
             className={classes.signOutButton}
             color="inherit"
-            onClick={props.signOut}
+            onClick={signOut}
           >
             <InputIcon />
           </IconButton>
@@ -75,15 +75,17 @@ const Topbar = props => {
   );
 };
 
-Topbar.propTypes = {
-  className: PropTypes.string,
-  onSidebarOpen: PropTypes.func
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
       signOut : () => dispatch(signOut())
   }
 }
 
+Topbar.propTypes = {
+  className: PropTypes.string,
+  onSidebarOpen: PropTypes.func
+};
+
+
+//export default Topbar;
 export default connect(null, mapDispatchToProps)(Topbar);
