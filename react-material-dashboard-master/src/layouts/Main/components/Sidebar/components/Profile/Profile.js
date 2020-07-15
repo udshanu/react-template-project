@@ -30,6 +30,7 @@ const Profile = props => {
   console.log('AuthContext', authContexts);
   console.log('authContexts.countState.firstName ', authContexts.countState);
   const fullName = authContexts.countState.firstName + ' ' + authContexts.countState.lastName;
+  const role = authContexts.countState.role;
 
   const classes = useStyles();
 
@@ -59,7 +60,10 @@ const Profile = props => {
       >
         {fullName}
       </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
+      <Typography variant="body2">
+        {/* {user.bio} */}
+        {role}
+        </Typography>
     </div>
   );
 };
