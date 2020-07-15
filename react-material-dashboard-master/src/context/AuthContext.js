@@ -4,11 +4,12 @@ import HiddenValues from '../common/getTokenHiddnVales'
 export const AuthContext = createContext();
 
 const initialAuth = {
-    userId: '111',
-    role: 'TestRole',
-    userName: 'TestUsername',
-    firstName: 'TestFirstname',
-    lastName: 'TestLastname'
+    userId: '',
+    role: '',
+    userName: '',
+    firstName: '',
+    lastName: '',
+    token:''
 }
 
 const AuthContextProvider = (props) => {
@@ -22,7 +23,8 @@ const AuthContextProvider = (props) => {
             role: profileValues.UserRole,
             userName: profileValues.UserName,
             firstName: profileValues.FirstName,
-            lastName: profileValues.LastName
+            lastName: profileValues.LastName,
+            token: profileValues.Token
         });
     }, []);
 

@@ -8,7 +8,8 @@ export default {
                 UserRole: payload.role,
                 UserName: payload.UserName,
                 FirstName: payload.FirstName,
-                LastName: payload.LastName
+                LastName: payload.LastName,
+                Token: token
             }
         }
         else
@@ -18,7 +19,8 @@ export default {
                 UserRole: '',
                 UserName: '',
                 FirstName: '',
-                LastName: ''
+                LastName: '',
+                Token: ''
             }
         }
         
