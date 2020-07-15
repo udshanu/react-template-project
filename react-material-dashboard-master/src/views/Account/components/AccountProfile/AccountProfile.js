@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
@@ -13,6 +13,7 @@ import {
   Button,
   LinearProgress
 } from '@material-ui/core';
+import Axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -31,13 +32,45 @@ const useStyles = makeStyles(theme => ({
   },
   uploadButton: {
     marginRight: theme.spacing(2)
-  }
+  },
+  // input: {
+  //   display: 'none',
+  // }
 }));
+
+const SelectedFile = '';
 
 const AccountProfile = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
+
+  const [values, setValues] = useState(
+    {
+      SelectedFile: 'roshan'
+    }
+  );
+
+  const handleChange = event => {
+    setValues({
+      ...values,
+      SelectedFile: event.target.files[0]
+    });
+
+    console.log('Values: ', values.SelectedFile);
+    console.log('File: ', event.target.files[0]);
+    console.log('File Name: ', event.target.files[0].name);
+  };
+
+  const fileUploadHandler = () => {
+    //handleChange();
+
+console.log('Called handleChange');
+    const fd = new FormData();
+    fd.append('image', values.SelectedFile)
+    console.log('Value Selected File: ',values.SelectedFile);
+    //Axios.post();
+  }
 
   const user = {
     name: 'Shen Zhi',
@@ -91,13 +124,29 @@ const AccountProfile = props => {
       </CardContent>
       <Divider />
       <CardActions>
+      <input
+        accept="image/*"
+        className={classes.input}
+        id="contained-button-file"
+        multiple
+        type="file"
+        onChange={handleChange}
+      />
+      <label htmlFor="contained-button-file">
+        {/* <Button variant="contained" color="primary" component="span">
+          Upload
+        </Button> */}
+      
         <Button
           className={classes.uploadButton}
           color="primary"
           variant="text"
+          component="span"
+          onClick={fileUploadHandler}
         >
           Upload picture
         </Button>
+        </label>
         <Button variant="text">Remove picture</Button>
       </CardActions>
     </Card>

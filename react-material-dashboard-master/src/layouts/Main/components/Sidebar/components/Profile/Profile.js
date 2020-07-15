@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography } from '@material-ui/core';
 import HiddenValues from '../../../../../../common/getTokenHiddnVales';
+import { AuthContext } from 'context/AuthContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,7 +24,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Profile = props => {
-  const { className, fullName, ...rest } = props;
+  const { className, ...rest } = props;
+
+  const { userId, role, userName, firstName, lastName } = useContext(AuthContext)
+  const fullName = firstName + ' ' + lastName;
 
   const classes = useStyles();
 
@@ -51,7 +55,6 @@ const Profile = props => {
         className={classes.name}
         variant="h4"
       >
-        {/* {user.name} */}
         {fullName}
       </Typography>
       <Typography variant="body2">{user.bio}</Typography>
