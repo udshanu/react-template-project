@@ -1,13 +1,15 @@
 import { AUTH_ACTION_TYPES } from "store/actions/actionTypes/authActionTypes";
 
-const initState = {
-  userRole: '',
+export const initState = {
+  UserId: '',
+  UserRole: '',
   UserName: '',
   FirstName: '',
   LastName: ''
 }
 
 const authReducer = (state = initState, action) => {
+  //const authReducer = (state, action) => {
   switch (action.type) {
     case AUTH_ACTION_TYPES.SIGNUP_SUCCESS:
       console.log('signup success ', action.payload);
@@ -20,7 +22,7 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         authError: null,
-        userRole: payload.role,
+        UserRole: payload.role,
         UserName: payload.UserName,
         FirstName: payload.FirstName,
         LastName: payload.LastName
@@ -30,12 +32,13 @@ const authReducer = (state = initState, action) => {
       return state;
     case AUTH_ACTION_TYPES.SIGNIN_SUCCESS:
       var payload = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
+      console.log('SignIn ', payload);
       var userRole = payload.role;
       var userName = payload.UserName
       return {
         ...state,
         authError: null,
-        userRole: userRole,
+        UserRole: userRole,
         UserName: userName,
         FirstName: payload.FirstName,
         LastName: payload.LastName

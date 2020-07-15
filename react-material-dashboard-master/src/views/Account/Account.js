@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 
 import { AccountProfile, AccountDetails } from './components';
 
@@ -12,6 +13,17 @@ const useStyles = makeStyles(theme => ({
 
 const Account = () => {
   const classes = useStyles();
+
+  const [token, setToken] = useState(localStorage.getItem('token'))
+
+  useEffect(() => {
+    setToken(localStorage.getItem('token'));
+  });
+
+  console.log('Account token ', token)
+
+
+  if (!token) return <Redirect to='/sign-in' />
 
   return (
     <div className={classes.root}>

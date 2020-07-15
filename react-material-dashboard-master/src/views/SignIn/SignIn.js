@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
@@ -17,6 +17,9 @@ import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 import { connect } from 'react-redux';
 import { signIn } from '../../store/actions/authActions';
 import { Redirect } from 'react-router-dom';
+import { AuthContext } from 'context/AuthContext';
+import authServices from '../../store/services/authServices';
+import { AUTH_ACTION_TYPES } from '../../store/actions/actionTypes/authActionTypes';
 
 const schema = {
   email: {
@@ -128,8 +131,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
 const SignIn = props => {
-  const { history, auth } = props;
+  const { history} = props;
+
+   const authContexts = useContext(AuthContext)
+
+  console.log('count value form signin page ', authContexts.count);
 
   const classes = useStyles();
 
@@ -175,20 +183,25 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    //history.push('/');
 
-    //code from roshan
-    console.log('Login formState ',formState);
-    console.log('Login formState.values ',formState.values);
-    console.log('Login Props ',props);
-    props.signin(formState.values)
+    authServices.auth().signIn(formState.values).then((response) => {
+      console.log('Login Response: ', response);
+
+      localStorage.setItem('token', response.data.token);
+      authContexts.countDispatch({type: AUTH_ACTION_TYPES.SIGNIN_SUCCESS, payload: response.data});
+      
+  }).catch((err) => {
+    console.log('Login Error: ', err);
+    authContexts.countDispatch({type: AUTH_ACTION_TYPES.SIGNIN_ERROR, err});
+})
 
   };
 
   const hasError = field =>
     formState.touched[field] && formState.errors[field] ? true : false;
 
-    if (auth) return <Redirect to='/' />
+    console.log('authContexts.count in signin ',authContexts.countState);
+    if (authContexts.countState.token) return <Redirect to='/' />
 
   return (
     <div className={classes.root}>
@@ -356,16 +369,4 @@ SignIn.propTypes = {
   history: PropTypes.object
 };
 
-const mapStateToProps = (state) => {
-  return {
-      auth: localStorage.getItem('token')
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-      signin : (creds) => dispatch(signIn(creds))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignIn));
+export default withRouter(SignIn);

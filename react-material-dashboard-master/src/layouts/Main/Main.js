@@ -5,7 +5,6 @@ import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar, Footer } from './components';
-import HiddenValues from '../../common/getTokenHiddnVales'
 
 const useStyles = makeStyles(theme => ({
   root: {

@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -22,14 +21,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Dashboard = (props) => {
+
   const classes = useStyles();
 
-  //Roshan
-  console.log(props);
-  const { auth } = props;
-  console.log('auth from local storage', auth)
+  const [token, setToken] = useState(localStorage.getItem('token'))
 
-  if (!auth) return <Redirect to='/sign-in' />
+  useEffect(() => {
+    setToken(localStorage.getItem('token'));
+  });
+
+
+  if (!token) return <Redirect to='/sign-in' />
 
   return (
     <div className={classes.root}>
@@ -114,11 +116,11 @@ const Dashboard = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-      auth: localStorage.getItem('token')
-  }
-}
+// const mapStateToProps = (state) => {
+//   return {
+//       auth: localStorage.getItem('token')
+//   }
+// }
 
 // const mapDispatchToProps = (dispatch) => {
 //   return {
@@ -126,4 +128,4 @@ const mapStateToProps = (state) => {
 //   }
 // }
 
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;

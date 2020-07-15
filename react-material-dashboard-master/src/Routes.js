@@ -18,6 +18,7 @@ import {
 } from './views';
 
 const Routes = () => {
+  console.log('Redirect File');
   return (
     <Switch>
       <Redirect

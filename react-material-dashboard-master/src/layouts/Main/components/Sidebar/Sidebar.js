@@ -42,6 +42,8 @@ const Sidebar = props => {
 
   const classes = useStyles();
 
+  console.log('Side Bar Loding ');
+
   const pages = [
     {
       title: 'Dashboard',

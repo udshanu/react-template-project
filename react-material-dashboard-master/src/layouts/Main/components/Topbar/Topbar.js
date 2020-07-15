@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -9,6 +9,10 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import InputIcon from '@material-ui/icons/Input';
 import { connect } from 'react-redux'
 import { signOut } from '../../../../store/actions/authActions'
+import { Redirect } from 'react-router-dom';
+import authServices from '../../../../store/services/authServices';
+import { AUTH_ACTION_TYPES } from '../../../../store/actions/actionTypes/authActionTypes';
+import { AuthContext } from 'context/AuthContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,13 +27,30 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Topbar = props => {
-  const { className, onSidebarOpen, signOut, ...rest } = props;
+  const { className, onSidebarOpen, ...rest } = props;
+  const authContexts = useContext(AuthContext)
 
   console.log('props in topbar ', props);
 
   const classes = useStyles();
 
   const [notifications] = useState([]);
+
+  const handleSignOut = () =>{
+    authServices.auth().signOut().then((response) => {
+      console.log('Logout Response: ', response);
+
+      localStorage.removeItem('token');
+      authContexts.countDispatch({type: AUTH_ACTION_TYPES.SIGNOUT_SUCCESS});
+      
+  }).catch((err) => {
+    console.log('LogOut Error: ', err);
+    authContexts.countDispatch({type: AUTH_ACTION_TYPES.SIGNOUT_ERROR, err});
+})
+  }
+
+console.log('Logout authContexts.countState.token ', authContexts.countState.token)
+  if (!authContexts.countState.token) return <Redirect to='/sign-in' />
 
   return (
     <AppBar
@@ -57,7 +78,8 @@ const Topbar = props => {
           <IconButton
             className={classes.signOutButton}
             color="inherit"
-            onClick={signOut}
+            // onClick={signOut}
+            onClick={handleSignOut}
           >
             <InputIcon />
           </IconButton>
@@ -75,17 +97,10 @@ const Topbar = props => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      signOut : () => dispatch(signOut())
-  }
-}
-
 Topbar.propTypes = {
   className: PropTypes.string,
   onSidebarOpen: PropTypes.func
 };
 
 
-//export default Topbar;
-export default connect(null, mapDispatchToProps)(Topbar);
+export default Topbar;

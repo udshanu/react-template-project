@@ -26,8 +26,10 @@ const useStyles = makeStyles(theme => ({
 const Profile = props => {
   const { className, ...rest } = props;
 
-  const { userId, role, userName, firstName, lastName } = useContext(AuthContext)
-  const fullName = firstName + ' ' + lastName;
+  const authContexts = useContext(AuthContext)
+  console.log('AuthContext', authContexts);
+  console.log('authContexts.countState.firstName ', authContexts.countState);
+  const fullName = authContexts.countState.firstName + ' ' + authContexts.countState.lastName;
 
   const classes = useStyles();
 

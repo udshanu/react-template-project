@@ -24,16 +24,16 @@ validate.validators = {
   ...validators
 };
 
-export default class App extends Component {
-  render() {
-    return (
-      <AuthContextProvider>
-      <ThemeProvider theme={theme}>
-        <Router history={browserHistory}>
-          <Routes />
-        </Router>
-      </ThemeProvider>
-      </AuthContextProvider>
-    );
-  }
+function App() {
+  return (
+    <AuthContextProvider>
+    <ThemeProvider theme={theme}>
+      <Router history={browserHistory}>
+        <Routes />
+      </Router>
+    </ThemeProvider>
+    </AuthContextProvider>
+  );
 }
+
+export default App
